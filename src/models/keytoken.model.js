@@ -17,10 +17,15 @@ var keytokenSchema = new mongoose.Schema({
         type:String,
         required:true,
     },
-    refreshToken:{
+    //RefreshToken đã được sử dụng, để sau này truy vấn account nào truy cập mà còn dùng RT cũ thì đưa vào diện nghi vấn
+    refreshTokensUsed:{
         type:Array,
         default: []
     },
+    refreshToken: {
+        type: String,
+        require: true,
+    }
 }, {
     timestamps: true,
     collection: COLLECTION_NAME

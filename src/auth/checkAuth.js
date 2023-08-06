@@ -11,7 +11,7 @@ const apiKeyMiddleware = async ( req, res, next) => {
         const key = req.headers[HEADER.API_KEY]?.toString();
         if (!key) {
             return res.status(403).json({
-                message: 'Foridden Error'
+                message: 'Forbidden Error'
             })
         }
         // check in DB
@@ -43,7 +43,14 @@ const checkPermission = ( permission ) => {
     }
 }
 
+const asyncHandler = fn => {
+    return (req, res, next) => {
+        fn(req, res, next).catch(next)
+    }
+}
+
 module.exports = {
     apiKeyMiddleware,
-    checkPermission
+    checkPermission,
+    asyncHandler
 }

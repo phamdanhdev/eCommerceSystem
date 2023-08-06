@@ -1,14 +1,29 @@
+const { CREATED, OK } = require("../core/success.response");
 const AccessService = require("../services/access.service");
+const { createAPIKeyForDevelopmentService } = require("../services/apikey.service");
 
 class AccessController {
 
+    createAPIKeyDummyForDevelopment = async (req, res, next) => {
+        new OK({
+            metadata: await createAPIKeyForDevelopmentService()
+        }).send(res);
+    }
+
+    login = async (req, res, next) => {
+        new OK({
+            metadata: await AccessService.login(req.body)
+        }).send(res);
+    }
+
     signUp = async (req, res, next) => {
-        try {
-            // console.log('[P]::signUp::', req.body);
-            return res.status(200).json(await AccessService.signUp(req.body))
-        } catch (error) {
-            next(error);
-        }
+        new CREATED({
+            message: 'Registered OK!',
+            metadata: await AccessService.signUp(req.body),
+            option: {
+                limit: 10
+            }
+        }).send(res);
     }
 
 }
